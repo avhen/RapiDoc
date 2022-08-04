@@ -24,6 +24,10 @@ export default css`
     .key-descr {
         color: #d7dbdd;
     }
+    .keyDesc > .m-markdown-small {
+        font-size: 15px !important;
+        margin-bottom: 10px;
+    }
     .open-bracket,
     .close-bracket {
         color: #f7f9f9 !important;
@@ -80,5 +84,9 @@ export default css`
     }
     .nav-bar-tag {
         border-bottom: solid 1px var(--fg3);
+    }
+    .textarea {
+        min-height: 400px;
+        color: #7cbfec;
     }
 `;
