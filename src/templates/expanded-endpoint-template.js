@@ -53,10 +53,10 @@ export function expandedEndpointBodyTemplate(path, tagName = '') {
         }
         <h2 part="section-operation-summary"> ${path.shortSummary || `${path.method.toUpperCase()} ${path.path}`}</h2>
         ${path.isWebhook
-          ? html`<span part="section-operation-webhook style="color:var(--primary-color); font-weight:bold; font-size: var(--font-size-regular);"> WEBHOOK </span>`
+          ? html`<span part="section-operation-webhook" style="color:var(--primary-color); font-weight:bold; font-size: var(--font-size-regular);"> WEBHOOK </span>`
           : html`
-            <div part='section-operation-webhook-method' class='mono-font regular-font-size' style='text-align:left; direction:ltr; padding: 8px 0; color:var(--fg3)'> 
-              <span part="label-operation-method" class='regular-font upper method-fg bold-text ${path.method}'>${path.method}</span> 
+            <div part="section-operation-webhook-method" class="mono-font regular-font-size" style="text-align:left; direction:ltr; padding: 8px 0; color:var(--fg3)"> 
+              <span part="label-operation-method" class="regular-font upper method-fg bold-text ${path.method}">${path.method}</span> 
               <span part="label-operation-path">${path.path}</span>
             </div>
           `
@@ -91,7 +91,7 @@ export function expandedEndpointBodyTemplate(path, tagName = '') {
           schema-hide-read-only = "${this.schemaHideReadOnly === 'never' ? 'false' : path.isWebhook ? 'false' : 'true'}"
           schema-hide-write-only = "${this.schemaHideWriteOnly === 'never' ? 'false' : path.isWebhook ? 'true' : 'false'}"
           fetch-credentials = "${this.fetchCredentials}"
-          exportparts = "btn:btn, btn-fill:btn-fill, btn-outline:btn-outline, btn-try:btn-try, btn-clear:btn-clear, btn-clear-resp:btn-clear-resp,
+          exportparts = "wrap-request-btn:wrap-request-btn, btn:btn, btn-fill:btn-fill, btn-outline:btn-outline, btn-try:btn-try, btn-clear:btn-clear, btn-clear-resp:btn-clear-resp,
             file-input:file-input, textbox:textbox, textbox-param:textbox-param, textarea:textarea, textarea-param:textarea-param, 
             anchor:anchor, anchor-param-example:anchor-param-example, schema-description:schema-description, schema-multiline-toggle:schema-multiline-toggle"
         > </api-request>
@@ -136,7 +136,7 @@ export default function expandedEndpointTemplate() {
       }
       </div>
     </section>
-    <section class='regular-font section-gap--read-mode' part="section-operations-in-tag">
+    <section class="regular-font section-gap--read-mode" part="section-operations-in-tag">
       ${tag.paths.map((path) => expandedEndpointBodyTemplate.call(this, path, 'BBB'))}
     </section>
     `)

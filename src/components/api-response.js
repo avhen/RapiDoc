@@ -9,6 +9,7 @@ import InputStyles from '~/styles/input-styles';
 import TabStyles from '~/styles/tab-styles';
 import BorderStyles from '~/styles/border-styles';
 import CustomStyles from '~/styles/custom-styles';
+import '~/components/json-tree';
 import '~/components/schema-tree';
 import '~/components/schema-table';
 
@@ -207,7 +208,7 @@ export default class ApiResponse extends LitElement {
   responseHeaderListTemplate(respHeaders) {
     return html`
       <div style="padding:16px 0 8px 0" class="resp-headers small-font-size bold-text">RESPONSE HEADERS</div> 
-      <table style="border-collapse: collapse; margin-bottom:16px; border:1px solid var(--border-color); border-radius: var(--border-radius)" class="small-font-size mono-font">
+      <table role="presentation" style="border-collapse: collapse; margin-bottom:16px; border:1px solid var(--border-color); border-radius: var(--border-radius)" class="small-font-size mono-font">
         ${respHeaders.map((v) => html`
           <tr>
             <td style="padding:8px; vertical-align: baseline; min-width:120px; border-top: 1px solid var(--light-border-color); text-overflow: ellipsis;">
@@ -229,7 +230,7 @@ export default class ApiResponse extends LitElement {
 
   mimeTypeDropdownTemplate(mimeTypes) {
     return html`
-      <select @change="${(e) => { this.selectedMimeType = e.target.value; }}" style='margin-bottom: -1px; z-index:1'>
+      <select aria-label='mime types' @change="${(e) => { this.selectedMimeType = e.target.value; }}" style='margin-bottom: -1px; z-index:1'>
         ${mimeTypes.map((mimeType) => html`<option value='${mimeType}' ?selected = '${mimeType === this.selectedMimeType}'> ${mimeType} </option>`)}
       </select>`;
   }
@@ -270,7 +271,7 @@ export default class ApiResponse extends LitElement {
           }`
         : html`
           <span class = 'example-panel ${this.renderStyle === 'read' ? 'border pad-8-16' : 'border-top pad-top-8'}'>
-            <select style="min-width:100px; max-width:100%" @change='${(e) => this.onSelectExample(e)}'>
+            <select aria-label='response examples' style="min-width:100px; max-width:100%" @change='${(e) => this.onSelectExample(e)}'>
               ${mimeRespDetails.examples.map((v) => html`<option value="${v.exampleId}" ?selected=${v.exampleId === mimeRespDetails.selectedExample} > 
                 ${v.exampleSummary.length > 80 ? v.exampleId : v.exampleSummary} 
               </option>`)}
@@ -306,22 +307,20 @@ export default class ApiResponse extends LitElement {
       ${this.schemaStyle === 'table'
         ? html`
           <schema-table
-            render-style = "${this.renderStyle}"
             .data = "${mimeRespDetails.schemaTree}"
             schema-expand-level = "${this.schemaExpandLevel}"
             schema-description-expanded = "${this.schemaDescriptionExpanded}"
-            allow-schema-description-expand-toggle = "${this.allowSchemaDescriptionExpandToggle}",
+            allow-schema-description-expand-toggle = "${this.allowSchemaDescriptionExpandToggle}"
             schema-hide-read-only = "${this.schemaHideReadOnly}"
             schema-hide-write-only = "${this.schemaHideWriteOnly}"
             exportparts = "schema-description:schema-description, schema-multiline-toggle:schema-multiline-toggle"
-          > </schema-tree> `
+          > </schema-table> `
         : html`
           <schema-tree
-            render-style = "${this.renderStyle}"
             .data = '${mimeRespDetails.schemaTree}'
             schema-expand-level = "${this.schemaExpandLevel}"
             schema-description-expanded = "${this.schemaDescriptionExpanded}"
-            allow-schema-description-expand-toggle = "${this.allowSchemaDescriptionExpandToggle}",
+            allow-schema-description-expand-toggle = "${this.allowSchemaDescriptionExpandToggle}"
             schema-hide-read-only = "${this.schemaHideReadOnly}"
             schema-hide-write-only = "${this.schemaHideWriteOnly}"
             exportparts = "schema-description:schema-description, schema-multiline-toggle:schema-multiline-toggle"

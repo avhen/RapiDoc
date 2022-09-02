@@ -461,12 +461,12 @@ export default class ApiRequest extends LitElement {
                               .data = '${schemaAsObj}'
                               schema-expand-level = "${this.schemaExpandLevel}"
                               schema-description-expanded = "${this.schemaDescriptionExpanded}"
-                              allow-schema-description-expand-toggle = "${this.allowSchemaDescriptionExpandToggle}",
+                              allow-schema-description-expand-toggle = "${this.allowSchemaDescriptionExpandToggle}"
                               schema-hide-read-only = "${this.schemaHideReadOnly.includes(this.method)}"
                               schema-hide-write-only = "${this.schemaHideWriteOnly.includes(this.method)}"
-                              exportparts = "btn:btn, btn-fill:btn-fill, btn-outline:btn-outline, btn-try:btn-try, btn-clear:btn-clear, btn-clear-resp:btn-clear-resp,
-            file-input:file-input, textbox:textbox, textbox-param:textbox-param, textarea:textarea, textarea-param:textarea-param, 
-            anchor:anchor, anchor-param-example:anchor-param-example"
+                              exportparts = "wrap-request-btn:wrap-request-btn, btn:btn, btn-fill:btn-fill, btn-outline:btn-outline, btn-try:btn-try, btn-clear:btn-clear, btn-clear-resp:btn-clear-resp,
+                                file-input:file-input, textbox:textbox, textbox-param:textbox-param, textarea:textarea, textarea-param:textarea-param, 
+                                anchor:anchor, anchor-param-example:anchor-param-example"
                             > </schema-tree>
                           </div>`
                         }
@@ -530,7 +530,7 @@ export default class ApiRequest extends LitElement {
     return html`
     <div class="table-title top-gap">${title}</div>
     <div style="display:block; overflow-x:auto; max-width:100%;">
-      <table class="m-table" style="width:100%; word-break:break-word;">
+      <table role="presentation" class="m-table" style="width:100%; word-break:break-word;">
         ${tableRows}
       </table>
     </div>`;
@@ -717,7 +717,7 @@ export default class ApiRequest extends LitElement {
               .data = '${schemaAsObj}'
               schema-expand-level = "${this.schemaExpandLevel}"
               schema-description-expanded = "${this.schemaDescriptionExpanded}"
-              allow-schema-description-expand-toggle = "${this.allowSchemaDescriptionExpandToggle}",
+              allow-schema-description-expand-toggle = "${this.allowSchemaDescriptionExpandToggle}"
               schema-hide-read-only = "${this.schemaHideReadOnly}"
               schema-hide-write-only = "${this.schemaHideWriteOnly}"
               exportparts = "schema-description:schema-description, schema-multiline-toggle:schema-multiline-toggle"
@@ -732,7 +732,7 @@ export default class ApiRequest extends LitElement {
               .data = "${schemaAsObj}"
               schema-expand-level = "${this.schemaExpandLevel}"
               schema-description-expanded = "${this.schemaDescriptionExpanded}"
-              allow-schema-description-expand-toggle = "${this.allowSchemaDescriptionExpandToggle}",
+              allow-schema-description-expand-toggle = "${this.allowSchemaDescriptionExpandToggle}"
               schema-hide-read-only = "${this.schemaHideReadOnly}"
               schema-hide-write-only = "${this.schemaHideWriteOnly}"
               exportparts = "schema-description:schema-description, schema-multiline-toggle:schema-multiline-toggle"
@@ -965,7 +965,7 @@ export default class ApiRequest extends LitElement {
         }`);
       }
       return html`
-        <table style="width:100%;" class="m-table">
+        <table role="presentation" style="width:100%;" class="m-table">
           ${formDataTableRows}
         </table>
       `;
@@ -1073,7 +1073,7 @@ export default class ApiRequest extends LitElement {
     `;
 
     return html`
-    <div style="display:flex; align-items:flex-end; margin:16px 0; font-size:var(--font-size-small);">
+    <div style="display:flex; align-items:flex-end; margin:16px 0; font-size:var(--font-size-small);" part="wrap-request-btn">
       <div class="hide-in-small-screen" style="flex-direction:column; margin:0; width:calc(100% - 60px);">
         <div style="display:flex; flex-direction:row; align-items:center; overflow:hidden;"> 
           ${selectedServerHtml}
