@@ -79,8 +79,11 @@ export default css`
     .param-name {
         font-weight: bold;
     }
+    .request-panel {
+        margin-top: 45px;
+    }
     .request-body-container {
-        margin-top: 30px;
+        margin-top: 10px;
     }
     .nav-bar-tag {
         border-bottom: solid 1px var(--fg3);

@@ -86,6 +86,9 @@ export default function setTheme(baseTheme, theme = {}) {
       yellow: theme.yellow || '#827717',
       lightYellow: theme.lightYellow || ColorUtils.color.brightness(bg1, -10), // #2a2a2a
 
+      grey: theme.grey || '#757575',
+      lightGrey: theme.lightGrey || ColorUtils.color.brightness(bg1, -10), // #2a2a2a
+
       purple: theme.purple || '#786FF1',
       brown: theme.brown || '#D4AC0D',
 
@@ -178,6 +181,9 @@ export default function setTheme(baseTheme, theme = {}) {
       yellow: theme.yellow || '#827717',
       lightYellow: theme.lightYellow || '#fff5cc',
 
+      grey: theme.grey || '#757575',
+      lightGrey: theme.lightGrey || ColorUtils.color.brightness(bg1, -10), // #2a2a2a
+
       purple: theme.purple || '#786FF1',
       brown: theme.brown || '#D4AC0D',
 
@@ -244,6 +250,8 @@ export default function setTheme(baseTheme, theme = {}) {
     --light-orange:${newTheme.lightOrange};
     --yellow:${newTheme.yellow};
     --light-yellow:${newTheme.lightYellow};
+    --grey:${newTheme.grey};
+    --light-grey:${newTheme.lightGrey};
     --purple:${newTheme.purple};
     --brown:${newTheme.brown};
 

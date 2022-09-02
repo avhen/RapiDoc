@@ -40,9 +40,20 @@ export function expandedEndpointBodyTemplate(path, tagName = '') {
       ${(this.renderStyle === 'focused' && tagName !== 'General ⦂') ? html`<h3 class="upper" style="font-weight:bold" part="section-operation-tag"> ${tagName} </h3>` : ''}
       ${path.deprecated ? html`<div class="bold-text red-text"> DEPRECATED </div>` : ''}
       ${html`
+        <h2 part="section-operation-summary"> ${path.shortSummary || `${path.method.toUpperCase()} ${path.path}`}</h2>
+        ${path.description ? html`<div class="m-markdown"> ${unsafeHTML(marked(path.description))}</div>` : ''}
+        ${path.isWebhook
+          ? html`<span part="section-operation-webhook" style="color:var(--primary-color); font-weight:bold; font-size: var(--font-size-regular);"> WEBHOOK </span>`
+          : html`
+            <div part='section-operation-webhook-method' class='mono-font regular-font-size' style='text-align:left; direction:ltr; padding: 8px 0; color:var(--fg3)'> 
+              <span part="label-operation-method" class='regular-font upper method-fg bold-text ${path.method}'>${path.method}</span> 
+              <span part="label-operation-path">${path.path}</span>
+            </div>
+          `
+        }
         ${path.xBadges && path.xBadges?.length > 0
           ? html`
-            <div style="display:flex; flex-wrap:wrap; margin-bottom: -24px; font-size: var(--font-size-small);">
+            <div id="xbages" style="display:flex; flex-wrap:wrap; margin-top: 15px; margin-bottom: 10px; font-size: calc(var(--font-size-small) - 5px);">
               ${path.xBadges.map((v) => (
                   html`<span style="margin:1px; margin-right:5px; padding:1px 8px; font-weight:bold; border-radius:12px;  background-color: var(--light-${v.color}, var(--input-bg)); color:var(--${v.color}); border:1px solid var(--${v.color})">${v.label}</span>`
                 ))
@@ -51,19 +62,9 @@ export function expandedEndpointBodyTemplate(path, tagName = '') {
             `
           : ''
         }
-        <h2 part="section-operation-summary"> ${path.shortSummary || `${path.method.toUpperCase()} ${path.path}`}</h2>
-        ${path.isWebhook
-          ? html`<span part="section-operation-webhook" style="color:var(--primary-color); font-weight:bold; font-size: var(--font-size-regular);"> WEBHOOK </span>`
-          : html`
-            <div part="section-operation-webhook-method" class="mono-font regular-font-size" style="text-align:left; direction:ltr; padding: 8px 0; color:var(--fg3)"> 
-              <span part="label-operation-method" class="regular-font upper method-fg bold-text ${path.method}">${path.method}</span> 
-              <span part="label-operation-path">${path.path}</span>
-            </div>
-          `
-        }
         <slot name="${path.elementId}"></slot>`
       }
-      ${path.description ? html`<div class="m-markdown"> ${unsafeHTML(marked(path.description))}</div>` : ''}
+      
       ${pathSecurityTemplate.call(this, path.security)}
       ${codeSampleTabPanel}
       <div class='expanded-req-resp-container'>
