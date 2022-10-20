@@ -98,7 +98,9 @@ export default class ApiRequest extends LitElement {
       PrismStyles,
       css`
         *, *:before, *:after { box-sizing: border-box; }
-    
+        :where(button, input[type="checkbox"], [tabindex="0"]):focus-visible { box-shadow: var(--focus-shadow); }
+        :where(input[type="text"], input[type="password"], select, textarea):focus-visible { border-color: var(--primary-color); }
+        tag-input:focus-within { outline: 1px solid;}
         .read-mode {
           margin-top: 24px;
         }
@@ -259,28 +261,23 @@ export default class ApiRequest extends LitElement {
     }
   }
 
+  /* eslint-disable indent */
   renderExample(example, paramType, paramName) {
     return html`
       ${paramType === 'array' ? '[' : ''}
       <a
         part="anchor anchor-param-example"
+        style="display:inline-block; min-width:24px; text-align:center"
         class="${this.allowTry === 'true' ? '' : 'inactive-link'}"
         data-example-type="${paramType === 'array' ? paramType : 'string'}"
         data-example="${example.value && Array.isArray(example.value) ? example.value?.join('~|~') : example.value || ''}"
         @click="${(e) => {
-    const inputEl = e.target.closest('table').querySelector(`[data-pname="${paramName}"]`);
-    if (inputEl) {
-      if (e.target.dataset.exampleType === 'array') {
-        inputEl.value = e.target.dataset.example.split('~|~');
-      } else {
-        inputEl.value = e.target.dataset.example;
-      }
-    }
-  }
-}"
-      >
-        ${example.value && Array.isArray(example.value) ? example.value?.join(', ') : example.value || '∅'}
-      </a>
+          const inputEl = e.target.closest('table').querySelector(`[data-pname="${paramName}"]`);
+          if (inputEl) {
+            inputEl.value = e.target.dataset.exampleType === 'array' ? e.target.dataset.example.split('~|~') : e.target.dataset.example;
+          }
+        }}"
+      > ${example.printableValue || example.value} </a>
       ${paramType === 'array' ? '] ' : ''}
     `;
   }
@@ -303,17 +300,15 @@ export default class ApiRequest extends LitElement {
     </ul>`;
   }
 
-  /* eslint-disable indent */
-
   exampleListTemplate(paramName, paramType, exampleList = []) {
-    return html` ${exampleList.length > 0
-      ? html`<span style="font-weight:bold">Examples: </span>
-          ${
-            anyExampleWithSummaryOrDescription(exampleList)
+    return html` ${
+      exampleList.length > 0
+        ? html`<span style="font-weight:bold">Examples: </span>
+          ${anyExampleWithSummaryOrDescription(exampleList)
             ? this.renderLongFormatExamples(exampleList, paramType, paramName)
-            : this.renderShortFormatExamples(exampleList, paramType, paramName)
-          }`
-      : ''}`;
+            : this.renderShortFormatExamples(exampleList, paramType, paramName)}`
+        : ''
+      }`;
   }
 
   inputParametersTemplate(paramType) {
@@ -336,7 +331,7 @@ export default class ApiRequest extends LitElement {
     for (const param of filteredParams) {
       const [declaredParamSchema, serializeStyle, mimeTypeElem] = getSchemaFromParam(param);
       if (!declaredParamSchema) {
-        continue; // eslint-disable-line no-continue
+        continue;
       }
       const paramSchema = getTypeInfo(declaredParamSchema);
       if (!paramSchema) {
@@ -1237,7 +1232,7 @@ export default class ApiRequest extends LitElement {
             }
           }
         } catch (err) {
-          console.log('RapiDoc: unable to parse %s into object', el.value); // eslint-disable-line no-console
+          console.error('RapiDoc: unable to parse %s into object', el.value); // eslint-disable-line no-console
         }
         if (queryParam.toString()) {
           urlQueryParamsMap.set(el.dataset.pname, queryParam);
@@ -1416,15 +1411,22 @@ export default class ApiRequest extends LitElement {
     const controller = new AbortController();
     const { signal } = controller;
     fetchOptions.headers = reqHeaders;
-    const fetchRequest = new Request(fetchUrl, fetchOptions);
+    const tempRequest = { url: fetchUrl, ...fetchOptions };
     this.dispatchEvent(new CustomEvent('before-try', {
       bubbles: true,
       composed: true,
       detail: {
-        request: fetchRequest,
+        request: tempRequest,
         controller,
       },
     }));
+    const updatedFetchOptions = {
+      method: tempRequest.method,
+      headers: tempRequest.headers,
+      credentials: tempRequest.credentials,
+      body: tempRequest.body,
+    };
+    const fetchRequest = new Request(tempRequest.url, updatedFetchOptions);
 
     let fetchResponse;
     let responseClone;
@@ -1522,6 +1524,7 @@ export default class ApiRequest extends LitElement {
           },
         }));
         this.responseMessage = 'Request Aborted';
+        this.responseText = 'Request Aborted';
       } else {
         this.dispatchEvent(new CustomEvent('after-try', {
           bubbles: true,
