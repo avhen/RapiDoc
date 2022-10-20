@@ -48,10 +48,10 @@ export default css`
   .method-fg.get { color: var(--blue); }
   .method-fg.delete { color: var(--red); }
   .method-fg.options, 
-  .method-fg.head, 
-  .method-fg.patch { 
+  .method-fg.head { 
     color: var(--yellow); 
   }
+  .method-fg.patch{ color: var(--purple); }
 
   h1{ font-family:var(--font-regular); font-size:28px; padding-top: 10px; letter-spacing:normal; font-weight:normal; }
   h2{ font-family:var(--font-regular); font-size:24px; padding-top: 10px; letter-spacing:normal; font-weight:normal; }
